@@ -41,7 +41,16 @@ public class AdminService {
 
     public boolean authenticate(String token) {
         // TODO implement authenticate
-        return false;
+        int numMatchedToken = DSL.using(jooqConfiguration)
+                                 .selectCount()
+                                 .from(TOKEN)
+                                 .where(TOKEN.TOKEN_.eq(token))
+                                 .execute();
+
+        if (numMatchedToken == 0){
+            return false;
+        }
+        return true;
     }
 
     private String generateToken() {
